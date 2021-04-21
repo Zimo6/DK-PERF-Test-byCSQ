@@ -27,8 +27,11 @@ def install_perf_app():
     for root, dirs, files in os.walk(perf_dir):
         for apk in files:
             if apk.endswith(".apk") or apk.endswith(".APK"):
-                os.system(f"adb install -r -g {perf_dir}/{apk}")
-                print(f"{apk} 安装成功！\n")
+                if os.system(f"adb install -r -g {perf_dir}/{apk}") != 0:
+                    print(f"{apk} 安装失败！\n")
+                    break
+                else:
+                    print(f"{apk} 安装成功！\n")
 
 
 #   安装测试启动速度的App
@@ -38,8 +41,12 @@ def install_Startup_app():
     for root, dirs, files in os.walk(perf_dir):
         for apk in files:
             if apk.endswith(".apk") or apk.endswith(".APK"):
-                os.system(f"adb install -r -g {perf_dir}/{apk}")
-                print(f"{apk} 安装成功！\n")
+
+                if os.system(f"adb install -r -g {perf_dir}/{apk}") != 0:
+                    print(f"{apk} 安装失败！\n")
+                    break
+                else:
+                    print(f"{apk} 安装成功！\n")
 
 
 #   将测试安装/卸载的Apk push到手机内
@@ -49,8 +56,11 @@ def push_Install_app():
     for root, dirs, files in os.walk(perf_dir):
         for apk in files:
             if apk.endswith(".apk") or apk.endswith(".APK"):
-                os.system(f"adb push {perf_dir}\\{apk} /sdcard/{apk}")
-                print(f"{apk} push成功！")
+                if os.system(f"adb push {perf_dir}\\{apk} /sdcard/{apk}") != 0:
+                    print(f"{apk} push失败！")
+                    break
+                else:
+                    print(f"{apk} push成功！")
 
 
 #   等待手机连接
@@ -63,7 +73,6 @@ def wait_for_phone():
 
 
 def main(appType):
-
     if appType == "perf":
         wait_for_phone()
         install_perf_app()
@@ -72,6 +81,7 @@ def main(appType):
         install_Startup_app()
     elif appType == "install":
         wait_for_phone()
+
         push_Install_app()
     else:
         print("你是煞笔吗？")
