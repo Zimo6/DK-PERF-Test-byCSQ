@@ -29,7 +29,6 @@ def install_perf_app():
             if apk.endswith(".apk") or apk.endswith(".APK"):
                 if os.system(f"adb install -r -g {perf_dir}/{apk}") != 0:
                     print(f"{apk} 安装失败！\n")
-                    break
                 else:
                     print(f"{apk} 安装成功！\n")
 
@@ -44,7 +43,6 @@ def install_Startup_app():
 
                 if os.system(f"adb install -r -g {perf_dir}/{apk}") != 0:
                     print(f"{apk} 安装失败！\n")
-                    break
                 else:
                     print(f"{apk} 安装成功！\n")
 
