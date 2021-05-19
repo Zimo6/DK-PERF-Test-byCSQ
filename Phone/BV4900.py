@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/4/7 17:45
+# @Time    : 2021/5/14 10:03
 # @Author  : CuiShuangqi
 # @Email   : 2807481686@qq.com
-# @File    : A60.py
+# @File    : BV4900.py
+
+"""
+    4900 Android-10 and Android-11
+"""
+
 import os
 from datetime import datetime
 from time import sleep
 from Common.BasePhone import BasePhone
 
-"""
-    Multilaser_F_Pro_2(安卓11)
 
-"""
-
-
-class A60(BasePhone):
+class BV4900(BasePhone):
     # 测试机型号
-    phone_model = os.popen("adb shell getprop ro.product.model").read().strip('\n')
+    # phone_model = os.popen("adb shell getprop ro.product.model").read().strip('\n')
+    phone_model = "BV4900"
     # 桌面元素
     desktop_key = "电话"
 
@@ -24,22 +25,22 @@ class A60(BasePhone):
     def write_test_info(self, test_type, test_info, pm=phone_model):
         self.write(test_type, test_info, pm)
 
-    # 删除测试结果
-
     # 清后台
     def clear_app(self):
         self.driver.keyevent(3)
         self.wait_element("text", self.desktop_key)
         self.driver.keyevent(187)
+        # self.wait_and_click_element("text", "全部清除")
+        # self.wait_element("text", "全部清除")
+        #
         sleep(1)
-        if self.find_element("id", "com.android.systemui:id/hct_remove_all"):
-            self.wait_and_click_element("id", "com.android.systemui:id/hct_remove_all")
-        # while True:
-        #     sleep(0.5)
-        #     self.swipe_point(535, 1700, 535, 300)
-        #     sleep(0.5)
-        #     if self.desktop_key in self.driver.page_source:
+        self.click_point(436, 1099)
+        # for i in range(30):
+        #     if "Google" in self.driver.page_source:
         #         break
+        #     else:
+        #         self.swipe_point(360, 900, 360, 360)
+        #         sleep(0.5)
         self.wait_element("text", self.desktop_key)
         print(f"{self.phone_model}后台已清空...")
 
@@ -55,9 +56,6 @@ class A60(BasePhone):
         :param locate_type:     启动成功定位方式（默认为text）
         :return:
         """
-        # if app_key_list is None:
-        #     app_key_list = []
-        # print(f"启动方式：{start_way}\n测试次数：{times}\n测试APP：{app_name}")
         self.write_test_info("启动速度", f"=================分割线=================\n测试开始时间：{datetime.now()}")
         self.write_test_info("启动速度", f"启动方式：{start_way}\n测试次数：{times}\n测试APP：{app_name}")
         self.driver.keyevent(3)
@@ -126,7 +124,7 @@ class A60(BasePhone):
                 break
             else:
                 sleep(1)
-                self.swipe_point(300, 988, 300, 300)
+                self.swipe_point(380, 1200, 380, 300)
         self.wait_and_click_element("text", file_app)
         sleep(1)
         if "继续" in self.driver.page_source:
@@ -142,18 +140,19 @@ class A60(BasePhone):
         for i in range(times):
             for j in range(10):
                 sleep(1)
-                if "应用" in self.driver.page_source:
+                if "内部存储设备" in self.driver.page_source:
                     break
                 else:
-                    self.swipe_point(300, 988, 300, 300)
-            self.wait_and_click_element("text", "应用")
-            self.wait_and_click_element("text", "应用安装文件 (APK)")
+                    self.swipe_point(380, 1200, 380, 100)
+            self.wait_and_click_element("text", "内部存储设备")
+            # self.wait_and_click_element("text", "应用安装文件 (APK)")
             for k in range(10):
                 if apk_name in self.driver.page_source:
                     break
                 else:
                     # 上滑
-                    self.swipe_point(300, 988, 300, 300)
+                    self.swipe_point(380, 1200, 380, 100)
+                    sleep(1)
             self.wait_and_click_element("text", apk_name)
             # 第一次安装需要同意未知应用权限
             if i == 0:
@@ -176,37 +175,41 @@ class A60(BasePhone):
             install_total_time.append(self.format_time(install_time))
             self.write_test_info("安装卸载", f"第{i + 1}次安装时间为：{self.format_time(install_time)}")
             # 【***卸载准备再次安装***】
-            self.driver.keyevent(4)
-            sleep(1)
-            self.driver.keyevent(4)
-            self.wait_and_click_element("text", "应用")
-            self.wait_and_click_element("text", "已安装的应用")
-            for l in range(10):
-                if app_name in self.driver.page_source:
-                    break
-                # 上滑
-                self.swipe_point(300, 988, 300, 300)
-            self.wait_and_click_element("text", app_name)
-            self.wait_and_click_element("text", "卸载")
-            self.wait_and_click_element("text", "确定")
-            uninstall_start_time = datetime.now()
-            # 等待卸载完成
-            while True:
-                if "已安装的应用" in self.driver.page_source:
-                    break
-            uninstall_last_time = datetime.now()
-            uninstall_time = uninstall_last_time - uninstall_start_time  # 得到总用时
-            uninstall_total_time.append(self.format_time(uninstall_time))
-            self.write_test_info("安装卸载", f"第{i + 1}次卸载时间为：{self.format_time(uninstall_time)}")
-            sleep(1)
+            # sleep(1)
+            # self.driver.keyevent(4)
+            # sleep(1)
+            # self.driver.keyevent(4)
+            # sleep(10)
+            # self.wait_and_click_element("text", "应用")
+            # self.wait_and_click_element("text", "已安装的应用")
+            # for l in range(10):
+            #     if app_name in self.driver.page_source:
+            #         break
+            #     # 上滑
+            #     sleep(1)
+            #     self.swipe_point(350, 1200, 350, 350)
+            # self.wait_and_click_element("text", app_name)
+            # self.wait_and_click_element("text", "卸载")
+            # self.wait_and_click_element("text", "确定")
+            # # uninstall_start_time = datetime.now()
+            # # 等待卸载完成
+            # while True:
+            #     if "已安装的应用" in self.driver.page_source:
+            #         break
+
+            # uninstall_last_time = datetime.now()
+            # uninstall_time = uninstall_last_time - uninstall_start_time  # 得到总用时
+            # uninstall_total_time.append(self.format_time(uninstall_time))
+            # self.write_test_info("安装卸载", f"第{i + 1}次卸载时间为：{self.format_time(uninstall_time)}")
+            sleep(3)
             self.driver.keyevent(4)
         self.write_test_info("安装卸载",
                              "安装时间：\n"
                              f"最大值:{self.get_list_avg(install_total_time)[0]}\n"
                              f"最小值:{self.get_list_avg(install_total_time)[1]}\n"
                              f"平均值:{self.get_list_avg(install_total_time)[2]}")
-        self.write_test_info("安装卸载",
-                             "卸载时间：\n"
-                             f"最大值:{self.get_list_avg(uninstall_total_time)[0]}\n"
-                             f"最小值:{self.get_list_avg(uninstall_total_time)[1]}\n"
-                             f"平均值:{self.get_list_avg(uninstall_total_time)[2]}\n")
+        # self.write_test_info("安装卸载",
+        #                      "卸载时间：\n"
+        #                      f"最大值:{self.get_list_avg(uninstall_total_time)[0]}\n"
+        #                      f"最小值:{self.get_list_avg(uninstall_total_time)[1]}\n"
+        #                      f"平均值:{self.get_list_avg(uninstall_total_time)[2]}\n")

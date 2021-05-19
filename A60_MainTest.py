@@ -3,8 +3,9 @@
 # @Author  : CuiShuangqi
 # @Email   : 2807481686@qq.com
 # @File    : A60_MainTest.py
-import unittest
+
 from Phone.A60 import A60
+import unittest
 
 """
     A60-安卓10
@@ -12,34 +13,60 @@ from Phone.A60 import A60
 
 
 class Main(unittest.TestCase):
-    demo = A60("8", "com.android.dialer", "com.android.dialer.app.DialtactsActivity")
+    # A60 = A60("11", "com.google.android.dialer", "com.google.android.dialer.extensions.GoogleDialtactsActivity")
+    A60 = A60("8", "com.android.dialer", "com.android.dialer.app.DialtactsActivity")
 
     @classmethod
     def setUpClass(cls):
-        cls.demo.clear_app()
+        print("【类】开始执行！")
 
     @classmethod
     def tearDownClass(cls):
-        cls.demo.driver_quit()
+        print("【类】结束执行！")
+        cls.A60.driver_quit()
 
-    # def setUp(self):
-    #     print("方法 开始执行一次")
-    #     self.demo.clear_app()
-    #
-    # def tearDown(self):
-    #     print("方法 结束执行一次")
-    #     self.demo.driver_quit()
+    def setUp(self):
+        print("【方法】开始执行！")
+        self.A60.clear_app()
+
+    def tearDown(self):
+        print("【方法】结束执行！")
+        # self.A60.driver_quit()
 
     def test001_startSpeed(self):
-        # self.demo.one_app_start("热", 10, "酷安", "com.coolapk.market", ["首页", "数码", "发现", "应用游戏", "我"])
-        # self.demo.one_app_start("热", 10, "3DMark", "com.futuremark.dmandroid.application", ["我的测试", "我的结果", "我的设备", "比较"])
-        # self.demo.one_app_start("热", 10, "Geekbench 4", "com.primatelabs.geekbench", ["处理器", "运算跑分", "电池跑分"])
-        # self.demo.one_app_start("冷", 10, "QQ", "com.tencent.mobileqq", ["欧成"])
-        self.demo.one_app_start("冷", 10, "QQ", "com.tencent.mobileqq", ["欧成"])
+        print("启动速度")
+        # self.A60.one_app_start("热", 6, "3DMark", "com.futuremark.dmandroid.application", ["我的测试", "我的结果", "我的设备", "比较"])
+        # self.A60.one_app_start("热", 6, "Geekbench 4", "com.primatelabs.geekbench", ["处理器", "运算跑分", "电池跑分"])
+        # self.A60.one_app_start("热", 6, "酷安", "com.coolapk.market", ["同意并继续"])
+        self.A60.one_app_start("热", 6, "微信", "com.tencent.mm", ["微信", "通讯录", "发现", "我"])
+
+
+        # self.A60.one_app_start("热", 10, "京东", "com.jingdong.app.mall", ["首页"])
+        # self.A60.one_app_start("热", 10, "哔哩哔哩", "tv.danmaku.bili", ["首页", "频道", "动态", "会员购", "我的"])
+        # self.A60.one_app_start("热", 10, "3DMark", "com.futuremark.dmandroid.application", ["我的测试", "我的结果", "我的设备", "比较"])
+        # self.A60.one_app_start("热", 10, "Chrome", "com.android.chrome", ["搜索或输入网址"])
+        # self.A60.one_app_start("热", 10, "Facebook", "com.facebook.katana", ["登录", "新建 Facebook 帐户", "密码", "忘记密码？"], locate_type="desc")
 
     def test002_installSpeed(self):
-        # self.demo.install_app(5, "androbench.apk", "AndroBench")
-        # self.demo.install_app(5, "酷安.apk", "酷安")
-        # self.demo.install_app(5, "3DMark.apk", "3DMark")
-        # self.demo.install_app(5, "夸克.apk", "夸克")
-        self.demo.install_app(5, "Antutu3DLite.apk", "安兔兔评测3DLite")
+        print("安装速度")
+        # self.A60.install_app(6, "一个木函.apk", "一个木函")
+        # self.A60.install_app(6, "今日头条.apk", "今日头条")
+        # self.A60.install_app(6, "腾讯视频.apk", "腾讯视频")
+        # self.A60.install_app(6, "QQ.apk", "QQ")
+        # self.A60.install_app(6, "三国杀.apk", "三国杀")
+        # self.A60.install_app(5, "和平精英.apk", "和平精英")
+        # self.A60.install_app(6, "王者荣耀.apk", "王者荣耀")
+
+
+# 加载测试用例到测试套件(总共有四种方式，参照：https://blog.csdn.net/weixin_44863956/article/details/104699764)
+if __name__ == '__main__':
+    # 创建一个测试套件
+    suite = unittest.TestSuite()
+    # 测试用例类添加到测试套件中
+    # loader = unittest.TestLoader()
+    # suite.addTest(loader.loadTestsFromTestCase(Main))
+
+    suite.addTest(Main("test001_startSpeed"))
+    # suite.addTest(Main("test002_installSpeed"))
+    # 运行
+    unittest.TextTestRunner().run(suite)

@@ -29,6 +29,7 @@ class BasePhone(object):
             'appPackage': package_name,  # 启动包名
             'appActivity': activity_name,  # 启动 Acclivity
             'noReset': True,  # 重置(不会保留之前的启动数据)
+            'newCommandTimeout': 6000 #超时时间
         }
         if android_version == "11":
             # Android 11 添加此参数
@@ -39,7 +40,7 @@ class BasePhone(object):
         # 启动服务/通过4723端口来建立一个会话
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         # 隐式等待10s
-        self.driver.implicitly_wait(10)
+        self.driver.implicitly_wait(15)
         print("Appium 初始化完成...")
         self.driver.keyevent(3)
 
